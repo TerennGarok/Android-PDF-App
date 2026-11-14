@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">PocketPDF</string>
+    <string name="title_activity_main">PocketPDF</string>
+    <string name="package_name">app.pocketpdf.scanner</string>
+    <string name="custom_url_scheme">app.pocketpdf.scanner</string>
+</resources>

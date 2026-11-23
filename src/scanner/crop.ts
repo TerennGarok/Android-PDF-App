@@ -10,6 +10,10 @@ export interface CropOptions {
   detected: boolean;
   pageNumber: number;
   onDone(q: Quad): void;
+  /** Label for the main button (default "Next"). */
+  doneLabel?: string;
+  /** Optional second action shown next to the main button, e.g. "Next page". */
+  secondary?: { label: string; icon: string; onClick(q: Quad): void };
   onRetake?(): void;
   onCancel(): void;
 }
@@ -70,12 +74,19 @@ export function cropView(opts: CropOptions): { el: HTMLElement; destroy(): void 
       opts.onRetake ? h('button', { class: 'tool-btn light', onclick: () => opts.onRetake!() }, icon('camera'), h('span', null, 'Retake')) : null,
       h('button', { class: 'tool-btn light', onclick: () => autoDetect() }, icon('wand'), h('span', null, 'Auto')),
       h('button', { class: 'tool-btn light', onclick: () => setQuad(fullQuad(W, H), 'Using the full image') }, icon('crop'), h('span', null, 'Full')),
-      h('button', { class: 'btn primary next-btn', onclick: () => {
-        if (!isConvex(quad)) { status.textContent = 'The frame must not cross over itself'; return; }
-        opts.onDone(quad);
-      } }, 'Next', icon('right', 18)),
+      opts.secondary
+        ? h('button', { class: 'btn secondary-btn', onclick: () => valid() && opts.secondary!.onClick(quad) }, icon(opts.secondary.icon, 18), opts.secondary.label)
+        : null,
+      h('button', { class: 'btn primary next-btn' + (opts.secondary ? ' compact' : ''), onclick: () => valid() && opts.onDone(quad) },
+        opts.doneLabel || 'Next', opts.doneLabel ? icon('check', 18) : icon('right', 18)),
     ),
   );
+
+  function valid() {
+    if (isConvex(quad)) return true;
+    status.textContent = 'The frame must not cross over itself';
+    return false;
+  }
 
   let k = 1; // svg units per CSS px
   function layout() {

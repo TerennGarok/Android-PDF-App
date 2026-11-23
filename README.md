@@ -10,7 +10,8 @@ A standalone Android app for scanning documents and working with PDFs. Everythin
 - Automatic edge detection suggests a crop frame. You can adjust it with 4 corner handles and 4 edge handles; a magnifier shows detail while you drag. *Auto* re-detects; *Full* uses the whole image.
 - Perspective correction straightens skewed, angled shots and recovers the page's true aspect ratio.
 - Lighting compensation evens out shadows, gradients and tinted light. Filters: Auto, Color, Grayscale, B&W, Original. Brightness and contrast sliders, plus rotate.
-- After each page it asks **"Scan next page / Add from photos / Done"** so you can build multi-page documents. Review screen to re-crop, re-filter, reorder, retake or delete pages.
+- **Fast multi-page capture:** after adjusting a page's crop, tap **Next page** to go straight back to the camera (it stays on between pages), or **Done**. With photos, it asks whether to add more pages when the batch is finished. No enhancement work happens between pages.
+- Straightening and enhancement run for all pages together on the review screen, in the background, with each thumbnail updating as it finishes. One tap there changes the enhancement for all pages. Per page you can re-crop, fine-tune (filter, brightness, contrast), rotate, reorder, retake or delete.
 - Save options: page size (fit to scan, Letter, A4, Legal), quality, and optional OCR so the scan becomes searchable and selectable.
 
 **PDF tools**

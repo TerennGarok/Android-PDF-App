@@ -12,6 +12,14 @@ export interface CameraOptions {
   onCapture(c: HTMLCanvasElement): void;
   onGallery(): void;
   onClose(): void;
+  /** Share one camera stream across pages so the camera doesn't restart for each page. */
+  keepAlive?: { stream: MediaStream | null };
+}
+
+/** Stop a stream kept alive across pages. */
+export function releaseCamera(holder: { stream: MediaStream | null }) {
+  holder.stream?.getTracks().forEach((t) => t.stop());
+  holder.stream = null;
 }
 
 export function cameraView(opts: CameraOptions): { el: HTMLElement; stop(): void } {
@@ -74,7 +82,9 @@ export function cameraView(opts: CameraOptions): { el: HTMLElement; stop(): void
       hint.textContent = 'Camera not available here. Use Photos instead (HTTPS is required for camera access).';
       return;
     }
-    try {
+    const held = opts.keepAlive?.stream;
+    if (held && held.getVideoTracks().some((t) => t.readyState === 'live')) stream = held;
+    else try {
       stream = await navigator.mediaDevices.getUserMedia({
         audio: false,
         video: { facingMode: { ideal: 'environment' }, width: { ideal: 3840 }, height: { ideal: 2160 } },
@@ -87,8 +97,9 @@ export function cameraView(opts: CameraOptions): { el: HTMLElement; stop(): void
         return;
       }
     }
+    if (opts.keepAlive) opts.keepAlive.stream = stream;
     if (stopped) {
-      stream.getTracks().forEach((t) => t.stop());
+      if (!opts.keepAlive) stream.getTracks().forEach((t) => t.stop());
       return;
     }
     video.srcObject = stream;
@@ -217,7 +228,8 @@ export function cameraView(opts: CameraOptions): { el: HTMLElement; stop(): void
     stopped = true;
     cancelAnimationFrame(raf);
     clearTimeout(timer);
-    stream?.getTracks().forEach((t) => t.stop());
+    if (!opts.keepAlive) stream?.getTracks().forEach((t) => t.stop());
+    video.srcObject = null;
     stream = null;
   }
 

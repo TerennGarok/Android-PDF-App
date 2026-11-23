@@ -216,6 +216,15 @@ textarea.field { resize: vertical; line-height: 1.4; }
 .loupe.show { opacity: 1; }
 .crop-actions { display: flex; align-items: center; gap: 4px; padding: 8px 10px calc(var(--safe-bottom) + 12px); }
 .next-btn { margin-left: auto; min-width: 116px; }
+.next-btn.compact { margin-left: 6px; min-width: 0; }
+.secondary-btn { margin-left: auto; background: #1e293b; border-color: #334155; color: #f1f5f9; padding: 0 14px; }
+.thumb.pending img { opacity: 0.55; filter: grayscale(0.4); }
+.thumb-spinner { position: absolute; top: 8px; right: 8px; width: 20px; height: 20px; border-width: 3px; }
+.review-filters { padding: 10px 0 0; }
+.review-filters .label { padding: 0 16px; }
+.review-filters .chips { padding: 8px 16px 0; }
+.review-filters .chip { color: var(--text); border-color: var(--border); background: var(--surface); }
+.review-filters .chip.on { background: var(--accent); border-color: var(--accent); color: #fff; }
 .filter-stage { flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; padding: 14px; }
 .filter-preview { max-width: 100%; max-height: 100%; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); background: #fff; }
 .filter-controls { background: #0f172a; border-top: 1px solid #1e293b; }
@@ -320,3 +329,6 @@ textarea.form-field { resize: none; padding-top: 1px; }
   .backdrop { align-items: center; }
   .sheet { border-radius: 20px; }
 }
+.crop-actions { gap: 2px; }
+.crop-actions .btn { white-space: nowrap; padding: 0 12px; }
+.crop-actions .tool-btn { min-width: 46px; padding: 0 2px; }
